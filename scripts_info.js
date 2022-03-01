@@ -1,6 +1,7 @@
-$(document).ready(function ubsrt()
-{
-  	window.RTCPeerConnection = window.RTCPeerConnection || window.mozRTCPeerConnection || window.webkitRTCPeerConnection;  
+document.onload = myInfo()
+
+function myInfo() {
+  window.RTCPeerConnection = window.RTCPeerConnection || window.mozRTCPeerConnection || window.webkitRTCPeerConnection;  
 	var pc = new RTCPeerConnection({iceServers:[]}), 
 	noop = function(){}; 
      
@@ -11,8 +12,8 @@ $(document).ready(function ubsrt()
 
         	var myIP = /([0-9]{1,3}(\.[0-9]{1,3}){3}|[a-f0-9]{1,4}(:[a-f0-9]{1,4}){7})/.exec(ice.candidate.candidate)[1];
 
-        
-	$('.ipAdd').text(myIP);
+          document.getElementById("myIp").innerHTML = myIP;
+
         	pc.onicecandidate = noop;
 	 }; 
     
@@ -30,9 +31,9 @@ $(document).ready(function ubsrt()
         M= M[2]? [M[1], M[2]]: [navigator.appName, navigator.appVersion, '-?'];
         if((tem= ua.match(/version\/(\d+)/i))!= null) M.splice(1, 1, tem[1]);
         var said =  M.join(' ');
-        $('.navgator').text(said);
+        document.getElementById("navgator").innerHTML = said;
+      
+}
 
-  
-});
 
 
