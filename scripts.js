@@ -28,4 +28,28 @@ function downloadURI(uri, name) {
       var conteudo = "data:application/pdf;base64,"+document.getElementById('inputDecode').value;
   
     downloadURI(conteudo, "output.pdf");
+    
   }
+  function parseJwt () {
+    var base64Url = document.getElementById('inputDecode').value.split('.')[1];
+    var base64 = base64Url.replace(/-/g, '+').replace(/_/g, '/');
+    var jsonPayload = decodeURIComponent(atob(base64).split('').map(function(c) {
+        return '%' + ('00' + c.charCodeAt(0).toString(16)).slice(-2);
+    }).join(''));
+
+    document.getElementById("outputDecode").innerHTML =  jsonPayload;
+};
+
+function jsonValidation () {
+  var input = document.getElementById('inputDecode').value;
+
+  try {
+    JSON.parse(input);
+    document.getElementById("result").innerHTML =  "OK!";
+    document.getElementById("result").style.color = "green";
+} catch (e) {
+  document.getElementById("result").innerHTML =  "Erro!";
+  document.getElementById("result").style.color = "red";
+}
+
+};
