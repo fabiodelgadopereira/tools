@@ -6,23 +6,9 @@ async function mergeAllPDFs() {
   const numDocs = 2;
   
   for(var i = 0; i < numDocs; i++) {
- 
+    let reader = await readFileAsync(selectedFile[i]);
     
- 
-      const file = selectedFile[0]
-      let reader = new FileReader();
-    
-    
-          let arrayBuffer = new Uint8Array(reader.result);
-   
-      
-    
-      reader.readAsArrayBuffer(file);
-    
-
-
-      const donorPdfBytes = arrayBuffer;
-      const donorPdfDoc = await PDFLib.PDFDocument.load(donorPdfBytes);
+      const donorPdfDoc = await PDFLib.PDFDocument.load(reader);
       const docLength = donorPdfDoc.getPageCount();
       for(var k = 0; k < docLength; k++) {
           const [donorPage] = await pdfDoc.copyPages(donorPdfDoc, [k]);
@@ -32,11 +18,41 @@ async function mergeAllPDFs() {
   }
 
   const pdfDataUri = await pdfDoc.saveAsBase64({ dataUri: true });
-  //console.log(pdfDataUri);
+ 
 
   // strip off the first part to the first comma "data:image/png;base64,iVBORw0K..."
-  var data_pdf = pdfDataUri.substring(pdfDataUri.indexOf(',')+1);
+ // var data_pdf = pdfDataUri.substring(pdfDataUri.indexOf(',')+1);
+  downloadURI(pdfDataUri, "output.pdf");
 }
+
+
+function downloadURI(uri, name) {
+    var link = document.createElement("a");
+    link.download = name;
+    link.href = uri;
+    document.body.appendChild(link);
+    link.click();
+    document.body.removeChild(link);
+    delete link;
+  }
+  function downloadFunction() {
+    //"data:text/html para text
+    var conteudo = "data:application/pdf;base64,"+document.getElementById('inputDecode').value;
+   var nomeArquivo = document.getElementById('fname').value+".pdf";
+  downloadURI(conteudo, nomeArquivo);
+  
+}
+
+function readFileAsync(file) {
+    return new Promise((resolve, reject) => {
+       let reader = new FileReader(); 
+       reader.onload = () => {
+          resolve(reader.result);
+       }; 
+       reader.onerror = reject; 
+       reader.readAsArrayBuffer(file);
+    })
+ }
 function convertToBase64() {
   //Read File
   var selectedFile = document.getElementById("inputFile").files;
@@ -51,7 +67,7 @@ function convertToBase64() {
       fileReader.onload = function(fileLoadedEvent) {
           base64 = fileLoadedEvent.target.result;
           // Print data in console
-          console.log(base64);
+          //console.log(base64);
       };
       // Convert data to base64
       fileReader.readAsDataURL(fileToLoad);

@@ -14,22 +14,6 @@ function decodeFunction() {
     document.getElementById("outputDecode").innerHTML = decodedString;
   }
 
-function downloadURI(uri, name) {
-    var link = document.createElement("a");
-    link.download = name;
-    link.href = uri;
-    document.body.appendChild(link);
-    link.click();
-    document.body.removeChild(link);
-    delete link;
-  }
-  function downloadFunction() {
-      //"data:text/html para text
-      var conteudo = "data:application/pdf;base64,"+document.getElementById('inputDecode').value;
-  
-    downloadURI(conteudo, "output.pdf");
-    
-  }
   function parseJwt () {
     var base64Url = document.getElementById('inputDecode').value.split('.')[1];
     var base64 = base64Url.replace(/-/g, '+').replace(/_/g, '/');
