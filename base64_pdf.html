@@ -1,40 +1,36 @@
 <!DOCTYPE html>
 <html lang="en">
-<head>
-    <style>
-        th, td {
-          padding: 5px;
-        }
-        th {
-          text-align: left;
-        }
-        </style>
-    <script  src="scripts_pdf.js"></script>
-    <link rel="stylesheet" href="mystyle.css">
-<meta charset="utf-8">
-<meta name="viewport" content="width=device-width, initial-scale=1">
-    
-    
-   
-
-    <table>
-        <tr>
-          <th  text-align: left;>Input</th>
-
-        </tr>
-        <tr>
-          <td><textarea id="inputDecode" name="inputDecode" rows="4" cols="50"></textarea></td>
-          </tr>
-          <tr>
-            
-            <td><label for="fname">File Name</label>
-                <input type="text" id="fname" name="fname" value="output"> 
-                <select name="file" id="file">
-                <option value=".pdf">.pdf</option>
-                <option value=".txt">.txt</option>
-</select>
- <button onclick="downloadFunction()">Download</button></td>
-            </tr>
-       </table>
-</head>
+   <head>
+      <style>
+         th, td {
+         padding: 5px;
+         }
+         th {
+         text-align: left;
+         }
+      </style>
+      <script  src="scripts_pdf.js"></script>
+      <link rel="stylesheet" href="mystyle.css">
+      <meta charset="utf-8">
+      <meta name="viewport" content="width=device-width, initial-scale=1">
+      <table>
+         <tr>
+            <th  text-align: left;>Input</th>
+         </tr>
+         <tr>
+            <td><textarea id="inputDecode" name="inputDecode" rows="4" cols="50"></textarea></td>
+         </tr>
+         <tr>
+            <td>
+               <label for="fname">File Name</label>
+               <input type="text" id="fname" name="fname" value="output"> 
+               <select name="file" id="file">
+                  <option value=".pdf">.pdf</option>
+                  <option value=".txt">.txt</option>
+               </select>
+               <button onclick="downloadFunction()">Download</button>
+            </td>
+         </tr>
+      </table>
+   </head>
 </html>

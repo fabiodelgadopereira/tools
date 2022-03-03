@@ -1,40 +1,32 @@
 <!DOCTYPE html>
 <html lang="en">
-<head>
-    <style>
-        th, td {
-          padding: 5px;
-        }
-        th {
-          text-align: left;
-        }
-        </style>
-    <script  src="scripts_pdf.js"></script>
-    <script src='pdf-lib/dist/pdf-lib.js'></script>
-    <script src='pdf-lib/dist/pdf-lib.min.js'></script>
-<meta charset="utf-8">
-<meta name="viewport" content="width=device-width, initial-scale=1">
-    
-    
-   
-
-    <table>
-        <tr>
-          <th  text-align: left;>Input</th>
-
-        </tr>
-        <tr>
-          <td><input id="inputFile" type="file"  multiple />
-          
-           
-          
-          </td>
-          </tr>
-          <tr>
-            
-            <td>
- <button onclick="mergeAllPDFs()">Test>></button></td>
-            </tr>
-       </table>
-</head>
+   <head>
+      <style>
+         th, td {
+         padding: 5px;
+         }
+         th {
+         text-align: left;
+         }
+      </style>
+      <script  src="scripts_pdf.js"></script>
+      <script src='pdf-lib/dist/pdf-lib.js'></script>
+      <script src='pdf-lib/dist/pdf-lib.min.js'></script>
+      <meta charset="utf-8">
+      <meta name="viewport" content="width=device-width, initial-scale=1">
+      <table>
+         <tr>
+            <th  text-align: left;>Input</th>
+         </tr>
+         <tr>
+            <td><input id="inputFile" type="file"  multiple />
+            </td>
+         </tr>
+         <tr>
+            <td> 
+               <button onclick="mergeAllPDFs()">Merge</button>
+            </td>
+         </tr>
+      </table>
+   </head>
 </html>
