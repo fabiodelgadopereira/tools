@@ -1,0 +1,17 @@
+<!DOCTYPE html>
+<html lang="en">
+   <head>
+      <link rel="stylesheet" href="mystyle.css">
+      <meta charset="utf-8">
+      <meta name="viewport" content="width=device-width, initial-scale=1">
+      <label>Simple:</label><br>
+      &nbsp;split -l <b>25</b> <b>file.csv</b> -d --additional-suffix=.csv $FileName part_<br><br>
+      <label>With Header</label><br>
+      &nbsp;tail -n +2 <b>file.csv</b>  | split -d -l <b>25</b> - --filter='sh -c "{ head -n1 <b>file.csv</b>; cat; } > $FILE"' part_ --additional-suffix=.csv
+      <label></label><br><br><br>
+      File name: <b>file.csv</b><br>
+      Number of lines for each part: <b>25</b>
+      <br>
+      
+   </head>
+</html>
