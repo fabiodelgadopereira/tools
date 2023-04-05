@@ -37,3 +37,17 @@ function jsonValidation () {
 }
 
 };
+
+function splitQueryString(url) {
+  const queryString = url.split('?')[1];
+  if (!queryString) return {};
+  
+  const keyValuePairs = queryString.split('&');
+  const params = {};
+  keyValuePairs.forEach(keyValue => {
+    const [key, value] = keyValue.split('=');
+    params[key] = decodeURIComponent(value);
+  });
+  
+  return params;
+}
