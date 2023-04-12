@@ -1,17 +1,58 @@
 <!DOCTYPE html>
-<html lang="en">
-   <head>
+<html>
+  <head>
+    <meta charset="utf-8">
+    <title>CSV File Splitter</title>
+    <style>
+      /* Estilos gerais */
+      body {
+        background-color: white;
+        font-family: Arial, sans-serif;
+        font-size: 14px;
+        margin: 0;
+        padding: 0;
+        text-align: center;
+      }
 
-      <meta charset="utf-8">
-      <meta name="viewport" content="width=device-width, initial-scale=1">
-      <label>Simple:</label><br>
-      &nbsp;split -l <b>25</b> <b>file.csv</b> -d --additional-suffix=.csv $FileName part_<br><br>
-      <label>With Header</label><br>
-      &nbsp;tail -n +2 <b>file.csv</b>  | split -d -l <b>25</b> - --filter='sh -c "{ head -n1 <b>file.csv</b>; cat; } > $FILE"' part_ --additional-suffix=.csv
-      <label></label><br><br><br>
-      File name: <b>file.csv</b><br>
-      Number of lines for each part: <b>25</b>
-      <br>
-      
-   </head>
+      /* Estilos para o input de arquivo */
+      #csv-file {
+        border: 1px solid #ccc;
+        border-radius: 3px;
+        display: inline-block;
+        margin: 20px auto;
+        padding: 10px;
+        width: 200px;
+      }
+
+      /* Estilos para o input de número de arquivos */
+      #num-files {
+        border: 1px solid #ccc;
+        border-radius: 3px;
+        display: inline-block;
+        margin: 10px;
+        padding: 5px;
+        width: 50px;
+      }
+
+      /* Estilos para o checkbox de cabeçalho */
+      #header-checkbox {
+        margin: 10px;
+      }
+
+
+    </style>
+  </head>
+  <body>
+    <input type="file" id="csv-file">
+    <br>
+    <label for="num-files">Quantidade de arquivos:</label>
+    <input type="number" id="num-files" value="2" min="1">
+    <br>
+    <label for="header-checkbox">Copiar cabeçalho:</label>
+    <input type="checkbox" id="header-checkbox" checked>
+    <br><br>
+    <button onclick="dividir()">Dividir</button>
+    <script src="./JSZip/jszip.min.js"></script>
+    <script src="script_file.js"></script>
+  </body>
 </html>
