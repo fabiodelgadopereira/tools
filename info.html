@@ -1,22 +1,65 @@
 <!DOCTYPE html>
-<html>
-<head>
-	<title>Endereço IP Externo</title>
-</head>
-<body>
-	<h1>Endereço IP Externo</h1>
-	<p id="ip"></p>
+<html lang="en">
+   <head>
+      <style>
+         th, td {
+         padding: 5px;
+         }
+         th {
+         text-align: left;
+         }
+      </style>
+      <meta charset="utf-8">
+      <meta name="viewport" content="width=device-width, initial-scale=1">
+   </head>
+   <body>
+      <p>Navegador: <b id="navgator"></b></p>
+      <p>User agent: <b id="userAgent"></b></p>
+      <p>Sistema Operacional: <b id="os"></b></p>
+      <p>Dispositivo: <b id="device"></b></p>
+      <p>IP externo: <b id="myPublicIp"></b></p>
+      <p>IP interno <b id="myIp"></b></p>
+      <script  src="scripts_info.js" defer></script>
+      <script>
+         // Obter informações do sistema operacional do visitante
+         var OSName="Unknown";
+         if (navigator.appVersion.indexOf("Win")!=-1) OSName="Windows";
+         if (navigator.appVersion.indexOf("Mac")!=-1) OSName="MacOS";
+         if (navigator.appVersion.indexOf("X11")!=-1) OSName="UNIX";
+         if (navigator.appVersion.indexOf("Linux")!=-1) OSName="Linux";
+   
+         // Obter informações do tipo de dispositivo do visitante
+         var deviceType = "Unknown";
+         if(/Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(navigator.userAgent)){
+             deviceType = "Mobile";
+         } else if(/Mac|iPad/i.test(navigator.userAgent)){
+             deviceType = "Tablet";
+         } else if(/Windows|Macintosh/i.test(navigator.userAgent)){
+             deviceType = "Desktop";
+         }
+   
+         // Obter o endereço IP interno do visitante
+         var pc = new RTCPeerConnection({iceServers:[]}), noop = function(){};      
+         pc.createDataChannel("");
+         pc.createOffer(pc.setLocalDescription.bind(pc), noop);
+   
+         pc.onicecandidate = function(ice){
+             if (!ice || !ice.candidate || !ice.candidate.candidate) return;
+             var ip = ice.candidate.candidate.split(' ')[4];
+             document.getElementById("myIp").innerHTML = ip;
+         };
 
-	<script>
-		// Obter o endereço IP externo do visitante
-		var xhr = new XMLHttpRequest();
-		xhr.open("GET", "https://api.ipify.org", true);
-		xhr.onreadystatechange = function() {
-			if (this.readyState === XMLHttpRequest.DONE && this.status === 200) {
-				document.getElementById("ip").innerHTML = "Endereço IP Externo: " + this.responseText;
-			}
-		};
-		xhr.send();
-	</script>
-</body>
+         // Obter o endereço IP externo do visitante
+         fetch('https://api.ipify.org?format=json')
+            .then(response => response.json())
+            .then(data => {
+               document.getElementById("myPublicIp").innerHTML = data.ip;
+            });
+   
+         document.getElementById("os").innerHTML =   OSName;
+         document.getElementById("device").innerHTML =  deviceType;
+         document.getElementById("userAgent").innerHTML =  navigator.userAgent;
+         document.getElementById("navgator").innerHTML = navigator.appName;
+      </script>
+   </body>
 </html>
