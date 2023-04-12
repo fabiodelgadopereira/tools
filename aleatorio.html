@@ -1,0 +1,101 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <title>Gerador de Senha Aleatória</title>
+    <style>
+  
+      button {
+padding: 10px;
+font-size: 16px;
+border-radius: 5px;
+border: none;
+background-color: #4CAF50;
+color: white;
+cursor: pointer;
+transition: background-color 0.3s ease;
+}
+
+button:hover {
+background-color: #3e8e41;
+}  </style>
+    <script>
+      function gerarSenha() {
+        const numCaracteres = document.getElementById("numCaracteres").value;
+        const usarMaiusculas = document.getElementById("usarMaiusculas").checked;
+        const usarMinusculas = document.getElementById("usarMinusculas").checked;
+        const usarNumeros = document.getElementById("usarNumeros").checked;
+        const usarSimbolos = document.getElementById("usarSimbolos").checked;
+        
+        let caracteres = "";
+        let senha = "";
+        
+        if (usarMaiusculas) caracteres += "ABCDEFGHIJKLMNOPQRSTUVWXYZ";
+        if (usarMinusculas) caracteres += "abcdefghijklmnopqrstuvwxyz";
+        if (usarNumeros) caracteres += "0123456789";
+        if (usarSimbolos) caracteres += "!@#$%^&*()_-+={}[]|<>?";
+        
+        for (let i = 0; i < numCaracteres; i++) {
+          senha += caracteres.charAt(Math.floor(Math.random() * caracteres.length));
+        }
+        
+        document.getElementById("senhaGerada").innerHTML = senha;
+        document.getElementById("labelSenhaGerada").hidden = false;
+        document.getElementById("senhaGerada").hidden = false;
+        document.getElementById("botaoCopiar").hidden = false;
+        
+      }
+      
+      function copiarSenha() {
+        const senhaGerada = document.getElementById("senhaGerada").innerHTML;
+        navigator.clipboard.writeText(senhaGerada);
+  
+      }
+    </script>
+  </head>
+  <body>
+    <h1>Gerador de Senha Aleatória</h1>
+    
+    <label for="numCaracteres">Número de caracteres:</label>
+    <input type="number" id="numCaracteres" value="18">
+    
+    <br><br>
+    
+    <label>
+      <input type="checkbox" id="usarMaiusculas" checked> Letra maiúscula
+    </label>
+    
+    <br>
+    
+    <label>
+      <input type="checkbox" id="usarMinusculas" checked> Letra minúscula
+    </label>
+    
+    <br>
+    
+    <label>
+      <input type="checkbox" id="usarNumeros" checked> Números
+    </label>
+    
+    <br>
+    
+    <label>
+      <input type="checkbox" id="usarSimbolos" checked> Símbolos
+    </label>
+    
+    <br><br>
+    
+    <button onclick="gerarSenha()">Gerar Senha</button>
+    
+    <br><br>
+    
+    <label for="senhaGerada" hidden id="labelSenhaGerada"><b>Senha Gerada: </b></label>
+    <span id="senhaGerada" hidden></span>
+    <button onclick="copiarSenha()" hidden id="botaoCopiar">Copiar!</button>
+    
+    <script>
+      document.getElementById("labelSenhaGerada").hidden = true;
+      document.getElementById("senhaGerada").hidden = true;
+      document.getElementById("botaoCopiar").hidden = true;
+    </script>
+  </body>
+</html>
