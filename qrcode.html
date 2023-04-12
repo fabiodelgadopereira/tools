@@ -1,0 +1,44 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="UTF-8">
+    <title>QR Code Generator</title>
+    <!-- Inclua a biblioteca qrcode.js -->
+    <script src="./qrcode/qrcode.min.js"></script>
+  </head>
+  <body>
+    <h1>QR Code Generator</h1>
+    <form>
+      <label for="url">Insira a URL:</label>
+      <input type="text" id="url" name="url" required>
+      <br>
+      <button type="submit" onclick="gerarQRCode(event)">Gerar QRCode</button>
+
+    </form>
+    <br>
+    <div id="qrcode"></div>
+    <script>
+function gerarQRCode(event) {
+  // Impede o envio do formulário para o servidor
+  event.preventDefault();
+  // Seleciona o elemento HTML onde será exibido o QRCode
+  var qrcodeElement = document.getElementById("qrcode");
+  // Remove o QRCode anterior, se houver
+  qrcodeElement.innerHTML = '';
+  // Recupera a URL informada pelo usuário
+  var url = document.getElementById("url").value;
+  // Cria o objeto QRCode
+  var qrcode = new QRCode(qrcodeElement, {
+    text: url,
+    width: 256,
+    height: 256,
+    colorDark : "#000000",
+    colorLight : "#ffffff",
+    correctLevel : QRCode.CorrectLevel.H
+  });
+}
+
+
+    </script>
+  </body>
+</html>
