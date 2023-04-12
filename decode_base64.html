@@ -4,7 +4,25 @@
       <script  src="scripts.js"></script>
       <meta charset="utf-8">
       <meta name="viewport" content="width=device-width, initial-scale=1">
-
+      <style>
+         button {
+           padding: 10px;
+           font-size: 16px;
+           border-radius: 5px;
+           border: none;
+           background-color: #4CAF50;
+           color: white;
+           cursor: pointer;
+           transition: background-color 0.3s ease;
+         }
+         
+         button:hover {
+           background-color: #3e8e41;
+         }
+         </style>
+   </head>
+      <body>
+         <h1>JSON To CSV Converter</h1>
       <table>
          <tr>
             <th>Input</th>
@@ -12,12 +30,12 @@
             <th>Output</th>
          </tr>
          <tr>
-            <td><textarea id="inputDecode" name="inputDecode" rows="4" cols="40" >SGVsbG8gV29ybGQh</textarea></td>
-            <td> <button onclick="decodeFunction()">Decode >></button><br>
+            <td><textarea id="inputDecode" name="inputDecode" rows="8" cols="40" >SGVsbG8gV29ybGQh</textarea></td>
+            <td> <button onclick="decodeFunction()">Decode >></button><br><br>
                <button onclick="encodeFunction()">Encode >></button>
             </td>
-            <td><textarea id="outputDecode" name="outputDecode" rows="4" cols="40"></textarea></td>
+            <td><textarea id="outputDecode" name="outputDecode" rows="8" cols="40"></textarea></td>
          </tr>
       </table>
-   </head>
+   </body>
 </html>

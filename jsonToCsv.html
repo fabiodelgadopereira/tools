@@ -1,0 +1,145 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="UTF-8">
+  <title>JSON To CSV Converter</title>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      margin: 20px;
+    }
+    #input {
+  width: 100%;
+  height: 200px;
+  resize: none;
+}
+
+#output {
+  width: 100%;
+  height: 200px;
+  resize: none;
+}
+
+#error {
+  color: red;
+  font-weight: bold;
+}
+
+button {
+  padding: 10px;
+  font-size: 16px;
+  border-radius: 5px;
+  border: none;
+  background-color: #4CAF50;
+  color: white;
+  cursor: pointer;
+  transition: background-color 0.3s ease;
+}
+
+button:hover {
+  background-color: #3e8e41;
+}
+</style>
+</head>
+<body>
+  <h1>JSON To CSV Converter</h1>
+  <textarea id="input">{
+    "pessoas": [
+      {
+        "nome": "João",
+        "idade": 30,
+        "endereco": {
+          "rua": "Rua A",
+          "numero": 123
+        }
+      },
+      {
+        "nome": "Maria",
+        "idade": 25,
+        "endereco": {
+          "rua": "Rua B",
+          "numero": 456
+        }
+      }
+    ]
+  }</textarea>
+  <br>
+  <button onclick="onConvert()">Convert</button>
+  <br>
+  <div id="error"></div>
+  <br>
+  <script>
+    function onConvert() {
+      const inputText = document.getElementById("input").value;
+      let jsonObj;
+
+      try {
+        jsonObj = JSON.parse(inputText);
+      } catch (e) {
+        document.getElementById("error").innerHTML = "Error: Invalid JSON input";
+        return;
+      }
+
+      document.getElementById("error").innerHTML = "";
+
+      const content = getContent(jsonObj);
+      const csv = createCsv(content);
+
+      const blob = new Blob([csv], { type: 'text/csv' });
+      const url = URL.createObjectURL(blob);
+      const downloadLink = document.createElement('a');
+      downloadLink.href = url;
+      downloadLink.download = 'output.csv';
+      downloadLink.click();
+    }
+
+    function getContent(jsonObj) {
+      const content = [];
+
+      // iterate over the keys of the object
+      for (const key in jsonObj) {
+        if (jsonObj.hasOwnProperty(key)) {
+          const subObj = jsonObj[key];
+          if (Array.isArray(subObj)) {
+            subObj.forEach((obj) => {
+              const flattened = flattenObject(obj);
+              content.push(flattened);
+            });
+          } else {
+            const flattened = flattenObject(subObj);
+            content.push(flattened);
+          }
+        }
+      }
+
+      return content;
+    }
+
+    function flattenObject(obj) {
+      const flattened = {};
+
+      function recurse(current, path) {
+        if (Object(current) !== current) {
+          flattened[path.join(".")] = current;
+        } else {
+          for (const key in current) {
+            if (current.hasOwnProperty(key)) {
+              recurse(current[key], path.concat([key]));
+            }
+          }
+        }
+      }
+
+      recurse(obj, []);
+
+      return flattened;
+    }
+
+    function createCsv(content) {
+      const headers = Object.keys(content[0]).join(",");
+      const rows = content.map((obj) => Object.values(obj).join(","));
+      return headers + "\n" + rows.join("\n");
+    }
+  </script>
+</body>
+</html>
