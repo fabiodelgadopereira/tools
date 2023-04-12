@@ -1,23 +1,22 @@
 <!DOCTYPE html>
-<html lang="en">
-   <head>
-      <style>
-         th, td {
-         padding: 5px;
-         }
-         th {
-         text-align: left;
-         }
-      </style>
-      <script  src="scripts_info.js" defer></script>
+<html>
+<head>
+	<title>Endereço IP Externo</title>
+</head>
+<body>
+	<h1>Endereço IP Externo</h1>
+	<p id="ip"></p>
 
-      <meta charset="utf-8">
-      <meta name="viewport" content="width=device-width, initial-scale=1">
-   </head><body>
-      <label for="fname">IP: </label><b><label  id=myIp></label></b>
-      <br>
-      <label for="fname">Navegador: </label><b><label id='navgator'><label></label></b>
-   </body>
+	<script>
+		// Obter o endereço IP externo do visitante
+		var xhr = new XMLHttpRequest();
+		xhr.open("GET", "https://api.ipify.org", true);
+		xhr.onreadystatechange = function() {
+			if (this.readyState === XMLHttpRequest.DONE && this.status === 200) {
+				document.getElementById("ip").innerHTML = "Endereço IP Externo: " + this.responseText;
+			}
+		};
+		xhr.send();
+	</script>
+</body>
 </html>
-
-
