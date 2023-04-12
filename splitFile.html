@@ -11,7 +11,6 @@
         font-size: 14px;
         margin: 0;
         padding: 0;
-        text-align: center;
       }
 
       /* Estilos para o input de arquivo */
@@ -38,11 +37,27 @@
       #header-checkbox {
         margin: 10px;
       }
+      button {
+  padding: 10px;
+  font-size: 16px;
+  border-radius: 5px;
+  border: none;
+  background-color: #4CAF50;
+  color: white;
+  cursor: pointer;
+  transition: background-color 0.3s ease;
+}
+
+button:hover {
+  background-color: #3e8e41;
+}
 
 
     </style>
   </head>
   <body>
+    <h1>CSV File Splitter</h1>
+  
     <input type="file" id="csv-file">
     <br>
     <label for="num-files">Quantidade de arquivos:</label>

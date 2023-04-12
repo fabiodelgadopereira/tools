@@ -3,6 +3,22 @@
   <head>
     <meta charset="UTF-8">
     <title>QR Code Generator</title>
+    <style>
+      button {
+        padding: 10px;
+        font-size: 16px;
+        border-radius: 5px;
+        border: none;
+        background-color: #4CAF50;
+        color: white;
+        cursor: pointer;
+        transition: background-color 0.3s ease;
+      }
+      
+      button:hover {
+        background-color: #3e8e41;
+      }
+      </style>
     <!-- Inclua a biblioteca qrcode.js -->
     <script src="./qrcode/qrcode.min.js"></script>
   </head>
@@ -11,6 +27,7 @@
     <form>
       <label for="url">Insira a URL:</label>
       <input type="text" id="url" name="url" required>
+      <br>
       <br>
       <button type="submit" onclick="gerarQRCode(event)">Gerar QRCode</button>
 
