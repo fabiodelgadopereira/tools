@@ -4,6 +4,9 @@
     <meta charset="UTF-8">
     <title>Split Query String</title>
     <style>
+      body {
+        font-size: 26px;
+      }
       #label-params {
         white-space: pre-wrap;
       }
@@ -11,77 +14,92 @@
         display: flex;
         gap: 10px;
       }
+      h1 {
+        font-size: 40px;
+      }
+      select,
+      button {
+        font-size: 20px;
+      }
+      #url {
+        color:  #ff8c00;
+      }
     </style>
-    <script>
-      function splitQueryString(url) {
-        const queryString = url.split('?')[1];
-        if (!queryString) return {};
-        const keyValuePairs = queryString.split('&');
-    const params = {};
-    keyValuePairs.forEach(keyValue => {
-      const [key, value] = keyValue.split('=');
-      params[key] = decodeURIComponent(value);
-    });
+      <script>
+        function splitQueryString(url) {
+          const queryString = url.split('?')[1] || url.split('#')[1];
+          if (!queryString) return {};
+          const keyValuePairs = queryString.split('&');
+          const params = {};
+          keyValuePairs.forEach(keyValue => {
+            const [key, value] = keyValue.split('=');
+            params[key] = decodeURIComponent(value);
+          });
+      
+          return params;
+        }
     
-    return params;
-  }
+        function handleSubmit(event) {
+          event.preventDefault();
+          const inputUrl = document.getElementById('input-url');
+          const url = inputUrl.value;
+          const params = splitQueryString(url);
+          const labelParams = document.getElementById('label-params');
+          let paramsList = '';
+          for (let key in params) {
+            paramsList += `<strong>${key}=</strong>${params[key]}\n\n`;
+          }
+          labelParams.innerHTML  = paramsList.trim(); // removemos espaços em branco extras no final
+      
+          // Habilitar o combobox e o botão de cópia
+          const selectParam = document.getElementById('select-param');
+          const btnCopy = document.getElementById('btn-copy');
+          selectParam.disabled = false;
+          btnCopy.disabled = false;
+          const options = Object.keys(params).map(key => {
+            return `<option value="${key}">${key}</option>`;
+          });
+          selectParam.innerHTML = options.join('');
+      
+          // Imprimir a URL abaixo do botão Split
+          const urlOutput = document.getElementById('url');
+          urlOutput.textContent = url.split('?')[0].split('#')[0];
+        }
   
-  function handleSubmit(event) {
-    event.preventDefault();
-    const inputUrl = document.getElementById('input-url');
-    const url = inputUrl.value;
-    const params = splitQueryString(url);
-    const labelParams = document.getElementById('label-params');
-    let paramsList = '';
-    for (let key in params) {
-      paramsList += `${key}=${params[key]}\n\n`;
-    }
-    labelParams.textContent = paramsList.trim(); // removemos espaços em branco extras no final
+        function copySelectedParameter() {
+          const selectParam = document.getElementById('select-param');
+          const key = selectParam.value;
+          const inputUrl = document.getElementById('input-url');
+          const url = inputUrl.value;
+          const params = splitQueryString(url);
+          const value = params[key];
+          if (value) {
+            navigator.clipboard.writeText(value);
+          } else {
+            alert(`O parâmetro "${key}" não foi encontrado na URL!`);
+          }
+        }
     
-    // Habilitar o combobox e o botão de cópia
-    const selectParam = document.getElementById('select-param');
-    const btnCopy = document.getElementById('btn-copy');
-    selectParam.disabled = false;
-    btnCopy.disabled = false;
-    const options = Object.keys(params).map(key => {
-      return `<option value="${key}">${key}</option>`;
-    });
-    selectParam.innerHTML = options.join('');
-  }
-
-  function copySelectedParameter() {
-    const selectParam = document.getElementById('select-param');
-    const key = selectParam.value;
-    const inputUrl = document.getElementById('input-url');
-    const url = inputUrl.value;
-    const params = splitQueryString(url);
-    const value = params[key];
-    if (value) {
-      navigator.clipboard.writeText(value);
-    } else {
-      alert(`O parâmetro "${key}" não foi encontrado na URL!`);
-    }
-  }
+      </script>
+    </head>
+    <body>
+      <h1>Split Query String</h1>
+      <form onsubmit="handleSubmit(event)">
+        <label for="input-url">URL:</label>
+        <input type="text" id="input-url" name="url">
+        <br><br><div id="url"></div><br>
+        <div class="button-container">
+          <button type="submit">Split</button>
+          <select id="select-param" disabled>
+            <option value="">Selecione um parâmetro...</option>
+          </select>
+          <button id="btn-copy" onclick="copySelectedParameter()" disabled>Copy!</button>
+        </div>
+      </form>
+      <br>
+      <label id="label-params"></label>
+      <br>
+      
+    </body>
+  </html>
   
-</script>
-</head>
-<body>
-  <h1>Split Query String</h1>
-  <form onsubmit="handleSubmit(event)">
-    <label for="input-url">URL:</label>
-    <input type="text" id="input-url" name="url">
- <br> <br> <br>
-    <div class="button-container">
-      <button type="submit">Split</button>
-      <select id="select-param" disabled>
-        <option value="">Selecione um parâmetro...</option>
-      </select>
-      <button id="btn-copy" onclick="copySelectedParameter()" disabled>Copy!</button>
-    </div>
-  </form>
-  <br>
-  <label id="label-params"></label>
-  <br>
-
-</body>
-</html>
