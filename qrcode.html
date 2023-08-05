@@ -1,61 +1,120 @@
 <!DOCTYPE html>
 <html>
-  <head>
-    <meta charset="UTF-8">
-    <title>QR Code Generator</title>
-    <style>
-      button {
-        padding: 10px;
-        font-size: 16px;
-        border-radius: 5px;
-        border: none;
-        background-color: #4CAF50;
-        color: white;
-        cursor: pointer;
-        transition: background-color 0.3s ease;
-      }
-      
-      button:hover {
-        background-color: #3e8e41;
-      }
-      </style>
-    <!-- Inclua a biblioteca qrcode.js -->
-    <script src="./qrcode/qrcode.min.js"></script>
-  </head>
-  <body>
-    <h1>QR Code Generator</h1>
-    <form>
-      <label for="url">Insira a URL:</label>
-      <input type="text" id="url" name="url" required>
-      <br>
-      <br>
-      <button type="submit" onclick="gerarQRCode(event)">Gerar QRCode</button>
+<head>
+  <meta charset="UTF-8">
+  <title>QR Code Generator</title>
+  <style>
+    button {
+      padding: 10px;
+      font-size: 16px;
+      border-radius: 5px;
+      border: none;
+      background-color: #4CAF50;
+      color: white;
+      cursor: pointer;
+      transition: background-color 0.3s ease;
+    }
 
-    </form>
-    <br>
-    <div id="qrcode"></div>
-    <script>
-function gerarQRCode(event) {
-  // Impede o envio do formulário para o servidor
-  event.preventDefault();
-  // Seleciona o elemento HTML onde será exibido o QRCode
-  var qrcodeElement = document.getElementById("qrcode");
-  // Remove o QRCode anterior, se houver
-  qrcodeElement.innerHTML = '';
-  // Recupera a URL informada pelo usuário
-  var url = document.getElementById("url").value;
-  // Cria o objeto QRCode
-  var qrcode = new QRCode(qrcodeElement, {
-    text: url,
-    width: 256,
-    height: 256,
-    colorDark : "#000000",
-    colorLight : "#ffffff",
-    correctLevel : QRCode.CorrectLevel.H
-  });
+    button:hover {
+      background-color: #3e8e41;
+    }
+  </style>
+  <script src="./qrcode/qrcode.min.js"></script>
+</head>
+<body>
+  <h1>QR Code Generator</h1>
+  <form>
+    <label for="text_or_url">Escolha uma opção:</label>
+    <select id="text_or_url" name="text_or_url">
+      <option value="url">URL</option>
+      <option value="text">Texto</option>
+    </select>
+    <br><br>
+    <label for="text">Insira o conteúdo:</label>
+    <textarea id="text" name="text" cols="40" rows="7" required></textarea>
+    <br><br>
+    <button type="submit" onclick="gerarQRCode(event)">Gerar QRCode</button>
+  </form>
+  <br>
+  <div id="qrcodes"></div>
+  <script>
+    function gerarQRCode(event) {
+      event.preventDefault();
+      var qrcodesElement = document.getElementById("qrcodes");
+      qrcodesElement.innerHTML = '';
+
+      var textOrUrl = document.getElementById("text_or_url").value;
+      var textArea = document.getElementById("text");
+
+      var text = textArea.value;
+
+      if (textOrUrl === "text") {
+        text = text
+          .replace(/[áàãâä]/g, "a")
+          .replace(/[éèêë]/g, "e")
+          .replace(/[íìîï]/g, "i")
+          .replace(/[óòõôö]/g, "o")
+          .replace(/[úùûü]/g, "u")
+          .replace(/ç/g, "c")
+      }
+
+      var qrCodes = generateQRCodeSegments(text);
+
+      qrCodes.forEach(function(qrCodeData, index) {
+        var qrCodeContainer = document.createElement("div");
+        qrCodeContainer.className = "qrcode-container";
+        qrcodesElement.appendChild(qrCodeContainer);
+
+        var qrSize = Math.min(512, Math.max(256, qrCodeData.length * 10));
+
+        var qrCodeElement = document.createElement("div");
+        qrCodeContainer.appendChild(qrCodeElement);
+
+        var qrcode = new QRCode(qrCodeElement, {
+          text: qrCodeData,
+          width: qrSize,
+          height: qrSize,
+          colorDark: "#000000",
+          colorLight: "#ffffff",
+          correctLevel: QRCode.CorrectLevel.H,
+          reliable: true
+        });
+      });
+    }
+
+    function generateQRCodeSegments(text) {
+      var maxSegmentLength = 1440;
+      var qrCodes = [];
+
+      while (text.length > 0) {
+        qrCodes.push(text.substring(0, maxSegmentLength));
+        text = text.substring(maxSegmentLength);
+      }
+
+      return qrCodes;
+    }
+
+    var textOrUrlSelect = document.getElementById("text_or_url");
+    var textArea = document.getElementById("text");
+
+// Ajuste inicial do número de linhas baseado na opção selecionada
+window.addEventListener("load", function () {
+  adjustTextareaRows();
+});
+
+textOrUrlSelect.addEventListener("change", function () {
+  adjustTextareaRows();
+});
+
+function adjustTextareaRows() {
+  if (textOrUrlSelect.value === "url") {
+    textArea.rows = 1;
+  } else {
+    textArea.rows = 7;
+  }
 }
 
 
-    </script>
-  </body>
+  </script>
+</body>
 </html>
