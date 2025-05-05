@@ -1,0 +1,100 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8">
+  <title>Conversor de Unix Timestamp</title>
+  <style>
+    body { font-family: sans-serif; padding: 20px; max-width: 500px; margin: auto; }
+    input, button { padding: 10px; margin: 5px 0; width: 100%; }
+    button {margin-bottom: 50px;}
+    h2 {margin-bottom: 50px;}
+    label { font-weight: bold; }
+    .result { margin-top: 10px; background: #f2f2f2; padding: 10px; border-radius: 5px; }
+  </style>
+</head>
+<body>
+  <h2>Conversor de Unix Timestamp</h2>
+
+  <label for="timestampInput">Valor (timestamp em segundos ou milissegundos):</label>
+  <input type="text" id="timestampInput" />
+  <button onclick="convertToDatetime()">Converter para Data/Hora</button><br>
+
+  <label for="datetimeInput">Data/Hora (YYYY-MM-DD HH:mm:ss.sss):</label><br>
+  <input type="text" id="datetimeInput" />
+  <button onclick="convertToTimestamp()">Converter para Timestamp</button>
+
+  <div class="result" id="output"></div>
+
+  <script>
+    function padZero(num, size) {
+      let s = "000" + num;
+      return s.substr(s.length - size);
+    }
+
+    function formatDateWithMillis(date) {
+      return `${date.getFullYear()}-${padZero(date.getMonth() + 1, 2)}-${padZero(date.getDate(), 2)} ` +
+             `${padZero(date.getHours(), 2)}:${padZero(date.getMinutes(), 2)}:${padZero(date.getSeconds(), 2)}.` +
+             `${padZero(date.getMilliseconds(), 3)}`;
+    }
+
+    function convertToDatetime() {
+      const input = document.getElementById("timestampInput").value.trim();
+      const output = document.getElementById("output");
+      if (!input || isNaN(input)) {
+        output.innerText = "Por favor, insira um número válido.";
+        return;
+      }
+
+      let valueNum = Number(input);
+      let date;
+      let millis = 0;
+
+      if (valueNum > 9999999999) {
+        // valor em milissegundos
+        date = new Date(valueNum);
+        millis = valueNum % 1000;
+      } else {
+        // valor em segundos — adicionar 4 horas
+        date = new Date((valueNum + 4 * 3600) * 1000);
+        millis = 0;
+      }
+
+      const formatted = formatDateWithMillis(date);
+      output.innerText = `Resultado: ${formatted}`;
+    }
+
+    function convertToTimestamp() {
+      const input = document.getElementById("datetimeInput").value.trim();
+      const output = document.getElementById("output");
+      const regex = /^(\d{4})-(\d{2})-(\d{2}) (\d{2}):(\d{2}):(\d{2})\.(\d{3})$/;
+      const match = input.match(regex);
+
+      if (!match) {
+        output.innerText = "Formato inválido. Use: YYYY-MM-DD HH:mm:ss.sss";
+        return;
+      }
+
+      const [_, year, month, day, hour, min, sec, millis] = match;
+      const date = new Date(
+        Number(year),
+        Number(month) - 1,
+        Number(day),
+        Number(hour),
+        Number(min),
+        Number(sec),
+        Number(millis)
+      );
+
+      const timestampMillis = date.getTime();
+      output.innerText = `Resultado: ${timestampMillis}`;
+    }
+
+    // Preencher os inputs com valores padrão do horário atual
+    window.onload = function () {
+      const now = new Date();
+      document.getElementById("timestampInput").value = now.getTime(); // timestamp em ms
+      document.getElementById("datetimeInput").value = formatDateWithMillis(now);
+    };
+  </script>
+</body>
+</html>

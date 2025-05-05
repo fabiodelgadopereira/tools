@@ -1,76 +1,99 @@
-* {
-  box-sizing: border-box;
-  font-family: "Segoe UI", Arial, sans-serif;
-  margin: 0;
-  padding: 0;
-}
-
 body {
-  background-color: #1a1a2e;
+  font-family: Tahoma, Verdana;
+  font-size: 12px;
+  background-color: #1c8cbc;
+  color: #000;
+  scrollbar-face-color: #DEE3E7;
+  scrollbar-highlight-color: #FFFFFF;
+  scrollbar-shadow-color: #DEE3E7;
+  scrollbar-3dlight-color: #D1D7DC;
+  scrollbar-arrow-color: #006699;
+  scrollbar-track-color: #EFEFEF;
+  scrollbar-darkshadow-color: #98AAB1;
 }
 
-header {
-  background-color: #3f3f74;
-  padding: 20px;
-  text-align: center;
-  font-size: 30px;
-  color: white;
+a:link, a:visited, a:active {
+  color: #BD1010;
+  text-decoration: none;
+  font-weight: bold;
 }
 
-section {
-  display: flex;
-  height: calc(100vh - 70px);
-  margin: 10px;
+a:hover {
+  color: #FF6600;
+  text-decoration: underline;
 }
 
-nav {
-  background-color: #2c2c54;
-  padding: 20px;
-  width: 200px;
-  height: 100%;
-  border-radius: 15px;
-}
-
-nav ul {
+.menu {
+  font-size: 14px;
+  color: #BD1010;
+  padding-left: 20px;
+  padding-top: 10px;
   list-style-type: none;
   margin: 0;
   padding: 0;
 }
 
-nav ul li {
-  margin-bottom: 10px;
+.menu li {
+  margin-bottom: 15px;
 }
 
-nav ul li a {
+.menu li a {
   display: block;
+  padding: 6px;
+  background-color: #FFFFFF;
+  color: red;
+  border-radius: 4px;
+}
+
+.menu li a:hover {
+  background-color: #DDDDDD;
+}
+
+.titulo {
+  font-size: 20px;
+  color: #FFFFFF;
+  font-weight: bold;
+}
+
+.titulond {
+  font-size: 11px;
+  color: #FFFFFF;
+}
+
+.header-row {
+  background-color: #BD1010;
+}
+
+.footer-row {
+  background-color: #d49404;
+}
+
+.menu-column {
+  width: 200px;
+  background-color: #DDDDDD;
+  border: 1px solid #1c8cbc;
   padding: 10px;
-  color: white;
-  text-decoration: none;
-  border-radius: 5px;
+  margin: 0 auto; /* Centraliza o menu na página */
 }
 
-nav ul li a:hover {
-  background-color: #5757a3;
+.iframe-column {
+  border: 1px solid #1c8cbc;
 }
 
-article {
-  background-color: #ffffff;
-  padding: 20px;
-  flex: 1;
-  border-radius: 15px;
+iframe {
+  background-color: #FFFFFF;
+  border: none;
 }
 
-footer {
-  background-color: #3f3f74;
-  padding: 10px;
-  text-align: center;
-  color: white;
-  position: absolute;
-  bottom: 0;
+table {
   width: 100%;
-  font-size: 12px;
 }
 
-article iframe {
-  background-color: #ffffff;
+td {
+  vertical-align: top;
+}
+
+.header-row td,
+.footer-row td {
+  text-align: center;
 }
