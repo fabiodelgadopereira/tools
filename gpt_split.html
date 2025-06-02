@@ -1,0 +1,109 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Text Splitter</title>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      margin: 0;
+      padding: 20px;
+      display: flex;
+      flex-direction: row;
+      gap: 20px;
+    }
+
+    .left {
+      width: 50%;
+      display: flex;
+      flex-direction: column;
+    }
+
+    .right {
+      width: 50%;
+      display: flex;
+      flex-direction: column;
+      gap: 10px;
+    }
+
+    textarea {
+      width: 100%;
+      height: 300px;
+      resize: vertical;
+      padding: 10px;
+      font-size: 16px;
+    }
+
+    button {
+      padding: 10px;
+      margin-top: 10px;
+      font-size: 16px;
+      cursor: pointer;
+    }
+
+    .copy-button {
+      padding: 10px;
+      background-color: #f0f0f0;
+      border: 1px solid #ccc;
+      cursor: pointer;
+      text-align: left;
+    }
+
+    .copy-button:hover {
+      background-color: #e0e0e0;
+    }
+  </style>
+</head>
+<body>
+
+  <div class="left">
+    <textarea id="inputText" placeholder="Digite ou cole um texto longo aqui..."></textarea>
+    <button onclick="splitText()">Split</button>
+  </div>
+
+  <div class="right" id="outputContainer">
+    <!-- Copy buttons serão adicionados aqui -->
+  </div>
+
+  <script>
+    function splitText() {
+      const MAX_LENGTH = 20000;
+      const text = document.getElementById("inputText").value.trim();
+      const outputContainer = document.getElementById("outputContainer");
+      outputContainer.innerHTML = ''; // Limpa resultados anteriores
+
+      if (!text) return;
+
+      let parts = [];
+      let current = '';
+      const words = text.split(/\s+/);
+
+      for (let word of words) {
+        if ((current + ' ' + word).length <= MAX_LENGTH) {
+          current += (current ? ' ' : '') + word;
+        } else {
+          parts.push(current);
+          current = word;
+        }
+      }
+      if (current) {
+        parts.push(current);
+      }
+
+      parts.forEach((part, index) => {
+        const button = document.createElement('button');
+        button.className = 'copy-button';
+        button.textContent = `Copy - part ${index + 1}`;
+        button.onclick = () => {
+          navigator.clipboard.writeText(part).then(() => {
+            button.textContent = `Copied`;
+          });
+        };
+        outputContainer.appendChild(button);
+      });
+    }
+  </script>
+
+</body>
+</html>
